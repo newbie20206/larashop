@@ -8,9 +8,34 @@ use App\Models\ProductSku;
 use App\Models\UserAddress;
 use App\Models\Order;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 class OrdersController extends Controller
 {
+    /**订单列表
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * Author: sai
+     * DateTime: 2019/12/7 1:02 下午
+     */
+    public function index(Request $request)
+    {
+        $orders = Order::query()
+            // 使用 with 方法预加载，避免N + 1问题
+            ->with(['items.product', 'items.productSku'])
+            ->where('user_id', $request->user()->id)
+            ->orderBy('created_at', 'desc')
+            ->paginate();
+
+        return view('orders.index', ['orders' => $orders]);
+    }
+
+    /**创建订单
+     * @param OrderRequest $request
+     * @return mixed
+     * Author: sai
+     * DateTime: 2019/12/7 1:02 下午
+     */
     public function store(OrderRequest $request)
     {
         $user  = $request->user();
