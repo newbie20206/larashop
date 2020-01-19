@@ -74,6 +74,15 @@ class OrdersController extends AdminController
             ->body(view('admin.orders.show', ['order' => Order::find($id)]));
     }
 
+    /**发货
+     * @param Order $order
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws InvalidRequestException
+     * @throws \Illuminate\Validation\ValidationException
+     * Author: sai
+     * DateTime: 2020/1/19 5:31 下午
+     */
     public function ship(Order $order, Request $request) {
         // 判断当前订单是否已支付
         if (!$order->paid_at) {
