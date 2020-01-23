@@ -119,4 +119,13 @@ class Order extends Model
 
         return $no;
     }
+
+    /**优惠券一对一关联
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * Author: sai
+     * DateTime: 2020/1/23 9:07 上午
+     */
+    public function couponCode() {
+        return $this->belongsTo(CouponCode::class);
+    }
 }
