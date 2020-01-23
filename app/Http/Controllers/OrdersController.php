@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Events\OrderReviewed;
+use App\Exceptions\CouponCodeUnavailableException;
 use App\Exceptions\InvalidRequestException;
 use App\Http\Requests\ApplyRefundRequest;
 use App\Http\Requests\OrderRequest;
 use App\Http\Requests\SendReviewRequest;
+use App\Models\CouponCode;
 use App\Models\UserAddress;
 use App\Models\Order;
 use Carbon\Carbon;
@@ -36,16 +38,27 @@ class OrdersController extends Controller
 
     /**创建订单
      * @param OrderRequest $request
+     * @param OrderService $orderService
      * @return mixed
+     * @throws CouponCodeUnavailableException
      * Author: sai
-     * DateTime: 2019/12/7 1:02 下午
+     * DateTime: 2020/1/23 11:26 上午
      */
     public function store(OrderRequest $request, OrderService $orderService)
     {
         $user    = $request->user();
         $address = UserAddress::find($request->input('address_id'));
+        $coupon  = null;
 
-        return $orderService->store($user, $address, $request->input('remark'), $request->input('items'));
+        // 如果用户提交了优惠码
+        if ($code = $request->input('coupon_code')) {
+            $coupon = CouponCode::where('code', $code)->first();
+            if (!$coupon) {
+                throw new CouponCodeUnavailableException('优惠券不存在');
+            }
+        }
+
+        return $orderService->store($user, $address, $request->input('remark'), $request->input('items'), $coupon);
     }
 
     /**订单详情
@@ -54,7 +67,7 @@ class OrdersController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      * @throws \Illuminate\Auth\Access\AuthorizationException
      * Author: sai
-     * DateTime: 2019/12/7 1:23 下午
+     * DateTime: 2020/1/23 11:30 上午
      */
     public function show(Order $order, Request $request)
     {
