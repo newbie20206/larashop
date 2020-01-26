@@ -71,6 +71,8 @@ class ProductsController extends Controller
             ],
             // 等价于 isset($category) ? $category : null
             'category' => $category ?? null,
+            // 将类目树传递给模板文件(改为ViewComposer来注入)
+//            'categoryTree' => $categoryService->getCategoryTree(),
         ]);
     }
 
