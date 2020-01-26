@@ -30,7 +30,8 @@ class Product extends Model
         return \Storage::disk('public')->url($this->attributes['image']);
     }
 
+    //关联类目
     public function category() {
-        $this->belongsTo(Category::class);
+        return $this->belongsTo(Category::class);
     }
 }
