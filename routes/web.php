@@ -39,6 +39,7 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
 
     Route::get('coupon_codes/{code}', 'CouponCodesController@show')->name('coupon_codes.show');
 
+    Route::post('crowdfunding_orders', 'OrdersController@crowdfunding')->name('crowdfunding_orders.store');     //众筹商品下单
 });
 
 Route::post('payment/alipay/notify', 'PaymentController@alipayNotify')->name('payment.alipay.notify');  //支付宝回调通知
