@@ -233,4 +233,6 @@ return [
     //延迟任务关闭无效订单触发等待时间
     'order_ttl' => 1800,    //30分钟
 
+    'ngrok_url' => env('NGROK_URL'),
+
 ];
