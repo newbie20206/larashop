@@ -36,12 +36,13 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
     Route::get('payment/{order}/alipay', 'PaymentController@payByAlipay')->name('payment.alipay');
     Route::get('payment/alipay/return', 'PaymentController@alipayReturn')->name('payment.alipay.return');
     Route::get('payment/{order}/wechat', 'PaymentController@payByWechat')->name('payment.wechat');
-    Route::post('payment/{order}/installment', 'PaymentController@payByInstallment')->name('payment.installment');  //分期付款
 
     Route::get('coupon_codes/{code}', 'CouponCodesController@show')->name('coupon_codes.show');
 
     Route::post('crowdfunding_orders', 'OrdersController@crowdfunding')->name('crowdfunding_orders.store');     //众筹商品下单
 
+    Route::post('payment/{order}/installment', 'PaymentController@payByInstallment')->name('payment.installment');  //分期付款
+    Route::get('installments', 'InstallmentsController@index')->name('installments.index');
 
 });
 
