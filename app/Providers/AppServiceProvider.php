@@ -9,7 +9,7 @@ use Yansongda\Pay\Pay;
 class AppServiceProvider extends ServiceProvider
 {
     /**
-     * Register any application services.
+     * 通过容器来注册支付应用服务，可通过如app('alipay')来获取yansongda/pay库的实例
      *
      * @return void
      */
@@ -19,7 +19,6 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton('alipay', function () {
             $config = config('pay.alipay');
 //            $config['notify_url'] = route('payment.alipay.notify');
-//            $config['notify_url'] = 'http://requestbin.net/r/1lb2bk51';
             $config['notify_url'] = ngrok_url('payment.alipay.notify');
             $config['return_url'] = route('payment.alipay.return');
 
