@@ -15,6 +15,7 @@
         "fideloper/proxy": "^4.0",
         "jxlwqq/quill": "^1.0",
         "laravel/framework": "^6.2",
+        "laravel/horizon": "^3.6",
         "laravel/tinker": "^1.0",
         "moontoast/math": "^1.2",
         "overtrue/laravel-lang": "^3.0",
