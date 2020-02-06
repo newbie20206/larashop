@@ -13,6 +13,7 @@ use App\Models\ProductSku;
 use App\Exceptions\InvalidRequestException;
 use App\Jobs\CloseOrder;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Redis;
 
 class OrderService
 {
@@ -271,6 +272,8 @@ class OrderService
         });
         // 秒杀订单的自动关闭时间与普通订单不同
         dispatch(new CloseOrder($order, config('app.seckill_order_ttl')));
+        //当完成下单逻辑时扣减 Redis 中的值
+        Redis::decr('seckill_sku_'.$sku->id);
 
         return $order;
     }
