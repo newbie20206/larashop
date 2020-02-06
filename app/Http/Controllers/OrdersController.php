@@ -8,6 +8,7 @@ use App\Exceptions\InvalidRequestException;
 use App\Http\Requests\ApplyRefundRequest;
 use App\Http\Requests\CrowdFundingOrderRequest;
 use App\Http\Requests\OrderRequest;
+use App\Http\Requests\SeckillOrderRequest;
 use App\Http\Requests\SendReviewRequest;
 use App\Models\CouponCode;
 use App\Models\ProductSku;
@@ -220,5 +221,20 @@ class OrdersController extends Controller
 
     }
 
+    /**秒杀商品下单
+     * @param SeckillOrderRequest $request
+     * @param OrderService $orderService
+     * @return mixed
+     * Author: sai
+     * DateTime: 2020/2/6 10:08 上午
+     */
+    public function seckill(SeckillOrderRequest $request, OrderService $orderService)
+    {
+        $user    = $request->user();
+        $address = UserAddress::find($request->input('address_id'));
+        $sku     = ProductSku::find($request->input('sku_id'));
+
+        return $orderService->seckill($user, $address, $sku);
+    }
 
 }
